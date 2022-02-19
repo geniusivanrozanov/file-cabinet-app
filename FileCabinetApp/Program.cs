@@ -118,7 +118,7 @@ namespace FileCabinetApp
             var dateString = Console.ReadLine();
 
             DateTime dateOfBirth;
-            if (!DateTime.TryParse(dateString, out dateOfBirth))
+            if (!DateTime.TryParse(dateString, CultureInfo.CreateSpecificCulture("en-US"), DateTimeStyles.None, out dateOfBirth))
             {
                 Console.WriteLine("Invalid date format.");
                 return;
