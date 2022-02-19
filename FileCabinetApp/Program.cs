@@ -1,4 +1,7 @@
-﻿namespace FileCabinetApp
+﻿using System;
+using System.Globalization;
+
+namespace FileCabinetApp
 {
     public static class Program
     {
@@ -14,14 +17,16 @@
         private static Tuple<string, Action<string>>[] commands = new Tuple<string, Action<string>>[]
         {
             new Tuple<string, Action<string>>("help", PrintHelp),
-            new Tuple<string, Action<string>>("exit", Exit),
             new Tuple<string, Action<string>>("stat", Stat),
+            new Tuple<string, Action<string>>("create", Create),
+            new Tuple<string, Action<string>>("exit", Exit),
         };
 
         private static string[][] helpMessages = new string[][]
         {
             new string[] { "help", "prints the help screen", "The 'help' command prints the help screen." },
             new string[] { "stat", "prints the count of records", "The 'stat' command prints the count of records." },
+            new string[] { "create", "creates new record", "The 'create' command creates new record." },
             new string[] { "exit", "exits the application", "The 'exit' command exits the application." },
         };
 
@@ -97,6 +102,28 @@
         {
             var recordsCount = Program.fileCabinetService.GetStat();
             Console.WriteLine($"{recordsCount} record(s).");
+        }
+
+        private static void Create(string parameters)
+        {
+            Console.Write("First name: ");
+            var firstName = Console.ReadLine();
+
+            Console.Write("Last name: ");
+            var lastName = Console.ReadLine();
+
+            Console.Write("Date of birth: ");
+            var dateString = Console.ReadLine();
+
+            DateTime dateOfBirth;
+            if (!DateTime.TryParse(dateString, out dateOfBirth))
+            {
+                Console.WriteLine("Invalid date format.");
+                return;
+            }
+
+            int index = fileCabinetService.CreateRecord(firstName, lastName, dateOfBirth);
+            Console.WriteLine($"Record #{index} is created.");
         }
 
         private static void Exit(string parameters)
