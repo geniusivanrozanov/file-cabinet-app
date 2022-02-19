@@ -124,7 +124,16 @@ namespace FileCabinetApp
                 return;
             }
 
-            int index = fileCabinetService.CreateRecord(firstName, lastName, dateOfBirth);
+            Console.Write("Balance: ");
+            decimal balance = Convert.ToDecimal(Console.ReadLine(), CultureInfo.InvariantCulture);
+
+            Console.Write("Working hours: ");
+            short workingHours = Convert.ToInt16(Console.ReadLine(), CultureInfo.InvariantCulture);
+
+            Console.Write("Sex: ");
+            char sex = (char)Console.Read();
+
+            int index = fileCabinetService.CreateRecord(firstName, lastName, dateOfBirth, balance, workingHours, sex);
             Console.WriteLine($"Record #{index} is created.");
         }
 
@@ -134,7 +143,8 @@ namespace FileCabinetApp
 
             foreach (var record in records)
             {
-                Console.WriteLine($"#{record.Id}, {record.FirstName}, {record.LastName}, {record.DateOfBirth:dd-MM-yyyy}");
+                Console.WriteLine($"#{record.Id}, {record.FirstName}, {record.LastName}, {record.DateOfBirth:yyyy-MM-dd}, " +
+                    $"{record.Balance.ToString("C", CultureInfo.CreateSpecificCulture("en-US"))}, {record.WorkingHours}, {record.Sex}");
             }
         }
 
